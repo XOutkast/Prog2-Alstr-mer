@@ -6,8 +6,8 @@ namespace Repository;
 // Databasåtkomst för fordon (CRUD & init)
 public class Repository
 {
-    private readonly string _connectionString;
     private const string DbFileName = "m05.db";
+    private readonly string _connectionString;
 
     // Sätt connection string & init db
     public Repository()
@@ -28,10 +28,7 @@ public class Repository
         {
             var projectFile = Path.Combine(currentDir.FullName, "m05.csproj");
             // Kontrollera filen
-            if (File.Exists(projectFile))
-            {
-                return Path.Combine(currentDir.FullName, DbFileName);
-            }
+            if (File.Exists(projectFile)) return Path.Combine(currentDir.FullName, DbFileName);
             currentDir = currentDir.Parent;
         }
 
@@ -45,7 +42,7 @@ public class Repository
     {
         using SQLiteConnection connection = new(_connectionString);
         connection.Open();
-        using SQLiteCommand command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = @"  
             CREATE TABLE IF NOT EXISTS car (
                 regNr TEXT NOT NULL PRIMARY KEY UNIQUE,
@@ -73,19 +70,17 @@ public class Repository
         var cars = new List<Car>();
         using SQLiteConnection connection = new(_connectionString);
         connection.Open();
-        using SQLiteCommand command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = "SELECT regNr, make, model, year, forSale FROM car";
 
-        using SQLiteDataReader reader = command.ExecuteReader();
+        using var reader = command.ExecuteReader();
         while (reader.Read())
-        {
             cars.Add(new Car(
                 reader.GetString(0),
                 reader.GetString(1),
                 reader.GetString(2),
                 reader.GetInt32(3),
                 reader.GetInt32(4) == 1));
-        }
         return cars;
     }
 
@@ -95,12 +90,11 @@ public class Repository
         var lorries = new List<Lorry>();
         using SQLiteConnection connection = new(_connectionString);
         connection.Open();
-        using SQLiteCommand command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = "SELECT regNr, make, model, year, forSale, load FROM lorry";
 
-        using SQLiteDataReader reader = command.ExecuteReader();
+        using var reader = command.ExecuteReader();
         while (reader.Read())
-        {
             // Konvertera db-rad till Lorry-objekt
             lorries.Add(new Lorry(
                 reader.GetString(0),
@@ -109,7 +103,6 @@ public class Repository
                 reader.GetInt32(3),
                 reader.GetInt32(4) == 1,
                 reader.GetInt32(5)));
-        }
         return lorries;
     }
 
@@ -120,7 +113,7 @@ public class Repository
         {
             using SQLiteConnection connection = new(_connectionString);
             connection.Open();
-            using SQLiteCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = @"
                 INSERT INTO car (regNr, make, model, year, forSale)
                 VALUES (@regNr, @make, @model, @year, @forSale)";
@@ -147,7 +140,7 @@ public class Repository
         {
             using SQLiteConnection connection = new(_connectionString);
             connection.Open();
-            using SQLiteCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = @"
                 INSERT INTO lorry (regNr, make, model, year, forSale, load)
                 VALUES (@regNr, @make, @model, @year, @forSale, @load)";
@@ -174,7 +167,7 @@ public class Repository
         {
             using SQLiteConnection connection = new(_connectionString);
             connection.Open();
-            using SQLiteCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "DELETE FROM car WHERE regNr = @regNr";
             command.Parameters.AddWithValue("@regNr", regNr);
             command.ExecuteNonQuery();
@@ -193,7 +186,7 @@ public class Repository
         {
             using SQLiteConnection connection = new(_connectionString);
             connection.Open();
-            using SQLiteCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "DELETE FROM lorry WHERE regNr = @regNr";
             command.Parameters.AddWithValue("@regNr", regNr);
             command.ExecuteNonQuery();

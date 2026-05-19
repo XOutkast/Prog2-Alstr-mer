@@ -18,57 +18,45 @@ public class Game1 : Game
     private const double EnemySpawnIntervalMs = 1200;
     private const double CoinSpawnIntervalMs = 1800; // för varje 1800 ms (1.8s)
 
-  // Gamestate
-    private enum State
-    {
-        Menu,
-        Run,
-        EnterScore,
-        HighScore,
-        About,
-        HowToPlay,
-        Quit
-    }
-
     // Grafik
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    // Bakgrund och UI
+    private float backgroundScroll;
+    private Texture2D backgroundTexture;
+    private Texture2D bulletTexture;
+    private List<Coin> coins;
+    private int coinsCollected;
+    private Texture2D coinTexture;
+
     // State-hantering
     private State currentState;
-    private KeyboardState previousKeyboardState;
+    private List<Enemy> enemies;
+    private int enemiesShot;
+
+    // Highscore
+    private HighScore highScore;
+    private string highScoreFilePath;
+    private Texture2D menuExitTexture;
+    private Texture2D menuHighScoreTexture;
+    private Texture2D menuStartTexture;
+    private Texture2D menuTexture;
+    private Texture2D mineTexture;
 
     // Spelobjekt
     private Player player;
-    private List<Enemy> enemies;
-    private List<Coin> coins;
-    private Random random;
 
-    // Highscore
-    private global::HighScore highScore;
-    private string highScoreFilePath;
-
-  	// Texturer och font
+    // Texturer och font
     private Texture2D playerTexture;
-    private Texture2D bulletTexture;
-    private Texture2D coinTexture;
-    private Texture2D mineTexture;
-    private Texture2D tripodTexture;
-    private Texture2D stoneTexture;
-    private Texture2D menuTexture;
-    private Texture2D menuStartTexture;
-    private Texture2D menuHighScoreTexture;
-    private Texture2D menuExitTexture;
-    private Texture2D backgroundTexture;
-    private SpriteFont uiFont;
-
-	// Bakgrund och UI
-    private float backgroundScroll;
+    private KeyboardState previousKeyboardState;
+    private Random random;
     private int selectedMenuItem;
-    private int enemiesShot;
-    private int coinsCollected;
-    private double timeSinceLastEnemySpawn;
+    private Texture2D stoneTexture;
     private double timeSinceLastCoinSpawn;
+    private double timeSinceLastEnemySpawn;
+    private Texture2D tripodTexture;
+    private SpriteFont uiFont;
 
     // konstruktor för Game1()
     public Game1()
@@ -115,7 +103,7 @@ public class Game1 : Game
 
         backgroundScroll = 0;
 
-		// Skapa spelaren
+        // Skapa spelaren
         player = new Player(
             playerTexture,
             Window.ClientBounds.Width / 2f,
@@ -124,23 +112,20 @@ public class Game1 : Game
             5f,
             bulletTexture);
 
-		// Ladda HighScore
-        highScore = new global::HighScore(10);
+        // Ladda HighScore
+        highScore = new HighScore(10);
         highScore.LoadFromFile(highScoreFilePath);
 
         SpawnEnemies();
     }
 
-	// Uppdatera gameloopen beroende på state
+    // Uppdatera gameloopen beroende på state
     protected override void Update(GameTime gameTime)
     {
-        KeyboardState keyboardState = Keyboard.GetState();
+        var keyboardState = Keyboard.GetState();
 
-		// ESC- återgå till meny
-        if (IsNewKeyPress(keyboardState, Keys.Escape) && currentState == State.Run)
-        {
-            currentState = State.Menu;
-        }
+        // ESC- återgå till meny
+        if (IsNewKeyPress(keyboardState, Keys.Escape) && currentState == State.Run) currentState = State.Menu;
 
         switch (currentState)
         {
@@ -255,20 +240,15 @@ public class Game1 : Game
             ActivateMenuItem();
         }
 
-        if (IsNewKeyPress(keyboardState, Keys.O))
-        {
-            currentState = State.About;
-        }
+        if (IsNewKeyPress(keyboardState, Keys.O)) currentState = State.About;
 
-        if (IsNewKeyPress(keyboardState, Keys.P))
-        {
-            currentState = State.HowToPlay;
-        }
+        if (IsNewKeyPress(keyboardState, Keys.P)) currentState = State.HowToPlay;
 
         if (IsNewKeyPress(keyboardState, Keys.Enter))
             ActivateMenuItem();
     }
-	// Aktivera valt menyobjekt
+
+    // Aktivera valt menyobjekt
     private void ActivateMenuItem()
     {
         if (selectedMenuItem == 0)
@@ -286,7 +266,7 @@ public class Game1 : Game
         }
     }
 
-	// Uppdatera spelet under en aktiv runda
+    // Uppdatera spelet under en aktiv runda
     private void RunUpdate(GameTime gameTime)
     {
         UpdateBackground(gameTime);
@@ -297,22 +277,18 @@ public class Game1 : Game
         if (!player.IsAlive)
         {
             if (highScore.IsHighScore(player.Points))
-            {
                 currentState = State.EnterScore;
-            }
             else
-            {
                 currentState = State.HighScore;
-            }
         }
     }
 
-	// Namninmatning för highscore
+    // Namninmatning för highscore
     private void EnterScoreUpdate(GameTime gameTime)
     {
         UpdateBackground(gameTime);
 
-        bool done = highScore.EnterUpdate(gameTime, player.Points);
+        var done = highScore.EnterUpdate(gameTime, player.Points);
         if (done)
         {
             highScore.SaveToFile(highScoreFilePath);
@@ -320,7 +296,7 @@ public class Game1 : Game
         }
     }
 
-	// Visa highscore-lista
+    // Visa highscore-lista
     private void HighScoreUpdate(KeyboardState keyboardState, GameTime gameTime)
     {
         UpdateBackground(gameTime);
@@ -329,7 +305,7 @@ public class Game1 : Game
             currentState = State.Menu;
     }
 
-	// Visa credits/OM
+    // Visa credits/OM
     private void AboutUpdate(KeyboardState keyboardState, GameTime gameTime)
     {
         UpdateBackground(gameTime);
@@ -338,7 +314,7 @@ public class Game1 : Game
             currentState = State.Menu;
     }
 
-	// Visa instruktioner för hur man spelar
+    // Visa instruktioner för hur man spelar
     private void HowToPlayUpdate(KeyboardState keyboardState, GameTime gameTime)
     {
         UpdateBackground(gameTime);
@@ -356,44 +332,49 @@ public class Game1 : Game
     // Rita huvudmenyn
     private void MenuDraw()
     {
-		// Rita titel
+        // Rita titel
         Vector2 titlePos = new((Window.ClientBounds.Width - menuTexture.Width) / 3.5f,
             170f);
         // 3.5f - 170f
         _spriteBatch.Draw(menuTexture, titlePos, Color.White);
 
-		// Startposition för menyval
-        float menuX = (Window.ClientBounds.Width - menuStartTexture.Width) / 2f;
+        // Startposition för menyval
+        var menuX = (Window.ClientBounds.Width - menuStartTexture.Width) / 2f;
         // float menuY = 210f;
-        float menuY = 160f;
-        float rowGap = 55f;
+        var menuY = 160f;
+        var rowGap = 55f;
 
-		//Rita menyval, markera valt alternativ
-        _spriteBatch.Draw(menuStartTexture, new Vector2(menuX, menuY), selectedMenuItem == 0 ? Color.Yellow : Color.White);
-        _spriteBatch.Draw(menuHighScoreTexture, new Vector2(menuX, menuY + rowGap), selectedMenuItem == 1 ? Color.Yellow : Color.White);
-        _spriteBatch.Draw(menuExitTexture, new Vector2(menuX, menuY + rowGap * 2), selectedMenuItem == 2 ? Color.Yellow : Color.White);
+        //Rita menyval, markera valt alternativ
+        _spriteBatch.Draw(menuStartTexture, new Vector2(menuX, menuY),
+            selectedMenuItem == 0 ? Color.Yellow : Color.White);
+        _spriteBatch.Draw(menuHighScoreTexture, new Vector2(menuX, menuY + rowGap),
+            selectedMenuItem == 1 ? Color.Yellow : Color.White);
+        _spriteBatch.Draw(menuExitTexture, new Vector2(menuX, menuY + rowGap * 2),
+            selectedMenuItem == 2 ? Color.Yellow : Color.White);
 
         // Rita instruktioner för menyinout
-        _spriteBatch.DrawString(uiFont, "UPP/NER + ENTER eller [S] [H] [A]", new Vector2(menuX - 8, menuY + rowGap * 3 + 20), Color.White);
-		// Instruktioner för Hur/OM/Spelet
-        _spriteBatch.DrawString(uiFont, "[O] OM/Credits - [P] Hur man spelar", new Vector2(menuX - 8, menuY + rowGap * 3 + 55), Color.White);
-     }
+        _spriteBatch.DrawString(uiFont, "UPP/NER + ENTER eller [S] [H] [A]",
+            new Vector2(menuX - 8, menuY + rowGap * 3 + 20), Color.White);
+        // Instruktioner för Hur/OM/Spelet
+        _spriteBatch.DrawString(uiFont, "[O] OM/Credits - [P] Hur man spelar",
+            new Vector2(menuX - 8, menuY + rowGap * 3 + 55), Color.White);
+    }
 
     // Rita spelare, fiender och HUD (Heads-Up Display)
     private void RunDraw()
     {
- 		// Rita alla fiender
-        foreach (Enemy e in enemies)
+        // Rita alla fiender
+        foreach (var e in enemies)
             e.Draw(_spriteBatch);
 
-		 // Rita alla coins
-        foreach (Coin c in coins)
+        // Rita alla coins
+        foreach (var c in coins)
             c.Draw(_spriteBatch);
 
-		// Rita spelaren
+        // Rita spelaren
         player.Draw(_spriteBatch);
 
-		// Rita HUD-information (poäng, statistik, kontroller)
+        // Rita HUD-information (poäng, statistik, kontroller)
         _spriteBatch.DrawString(uiFont, $"Points: {player.Points}", new Vector2(10, 10), Color.White);
         _spriteBatch.DrawString(uiFont, $"Kills: {enemiesShot}", new Vector2(10, 34), Color.White);
         _spriteBatch.DrawString(uiFont, $"Coins: {coinsCollected}", new Vector2(10, 58), Color.White);
@@ -405,27 +386,28 @@ public class Game1 : Game
     private void HighScoreDraw()
     {
         highScore.PrintDraw(_spriteBatch, uiFont);
-        _spriteBatch.DrawString(uiFont, "ENTER eller ESC för meny", new Vector2(20, Window.ClientBounds.Height - 40), Color.White);
+        _spriteBatch.DrawString(uiFont, "ENTER eller ESC för meny", new Vector2(20, Window.ClientBounds.Height - 40),
+            Color.White);
     }
 
     // Rita vy för namninmatning
     private void EnterScoreDraw()
     {
-		// Instruktion för att gå tillbaka
-        string title = "NY HIGHSCORE";
-        string help = "Skriv 1-3 bokstäver";
-        string controls = "ENTER = spara, BACKSPACE = radera";
-        string score = $"Poäng: {player.Points}";
+        // Instruktion för att gå tillbaka
+        var title = "NY HIGHSCORE";
+        var help = "Skriv 1-3 bokstäver";
+        var controls = "ENTER = spara, BACKSPACE = radera";
+        var score = $"Poäng: {player.Points}";
 
-        float centerX = Window.ClientBounds.Width / 2f;
-        float baseY = 110f;
-        float lineGap = 38f;
+        var centerX = Window.ClientBounds.Width / 2f;
+        var baseY = 110f;
+        var lineGap = 38f;
 
         Vector2 titlePos = new(centerX - uiFont.MeasureString(title).X / 2f, baseY);
         Vector2 helpPos = new(centerX - uiFont.MeasureString(help).X / 2f, baseY + lineGap);
         Vector2 controlsPos = new(centerX - uiFont.MeasureString(controls).X / 2f, baseY + lineGap * 2);
         Vector2 scorePos = new(centerX - uiFont.MeasureString(score).X / 2f, baseY + lineGap * 3);
-		// Rita text
+        // Rita text
         _spriteBatch.DrawString(uiFont, title, titlePos, Color.Yellow);
         _spriteBatch.DrawString(uiFont, help, helpPos, Color.White);
         _spriteBatch.DrawString(uiFont, controls, controlsPos, Color.White);
@@ -437,14 +419,20 @@ public class Game1 : Game
     private void AboutDraw()
     {
         _spriteBatch.DrawString(uiFont, "Om Spelet", new Vector2(20, 20), Color.Yellow);
-        _spriteBatch.DrawString(uiFont, "SpaceShooter byggt i MonoGame enligt P02 C# kurs tutorial.", new Vector2(20, 60), Color.White);
+        _spriteBatch.DrawString(uiFont, "SpaceShooter byggt i MonoGame enligt P02 C# kurs tutorial.",
+            new Vector2(20, 60), Color.White);
         _spriteBatch.DrawString(uiFont, "Skapare: X -", new Vector2(20, 88), Color.White);
-        _spriteBatch.DrawString(uiFont, "Distribution: Endast för skoluppgift, ej för vidare distribution.", new Vector2(20, 116), Color.White);
+        _spriteBatch.DrawString(uiFont, "Distribution: Endast för skoluppgift, ej för vidare distribution.",
+            new Vector2(20, 116), Color.White);
         _spriteBatch.DrawString(uiFont, "Credits/licens:", new Vector2(20, 154), Color.Yellow);
-        _spriteBatch.DrawString(uiFont, "- Kodbas: kapitel 8-9 + en extern HighScore-klass", new Vector2(20, 182), Color.White);
-        _spriteBatch.DrawString(uiFont, "- Sprites: lokala assets för SpaceSh.. (meny, skepp, fiender, bakgrund)", new Vector2(20, 210), Color.White);
-        _spriteBatch.DrawString(uiFont, "- Eventuella externa assets ska ..... Lorem ipsum dolor sit amet,  ", new Vector2(20, 238), Color.White);
-        _spriteBatch.DrawString(uiFont, "Tryck ENTER eller ESC för att gå tillbaka till menyn.", new Vector2(20, Window.ClientBounds.Height - 40), Color.White);
+        _spriteBatch.DrawString(uiFont, "- Kodbas: kapitel 8-9 + en extern HighScore-klass", new Vector2(20, 182),
+            Color.White);
+        _spriteBatch.DrawString(uiFont, "- Sprites: lokala assets för SpaceSh.. (meny, skepp, fiender, bakgrund)",
+            new Vector2(20, 210), Color.White);
+        _spriteBatch.DrawString(uiFont, "- Eventuella externa assets ska ..... Lorem ipsum dolor sit amet,  ",
+            new Vector2(20, 238), Color.White);
+        _spriteBatch.DrawString(uiFont, "Tryck ENTER eller ESC för att gå tillbaka till menyn.",
+            new Vector2(20, Window.ClientBounds.Height - 40), Color.White);
     }
 
     // Rita instruktioner för spelaren om (Hur man spealr)
@@ -454,27 +442,28 @@ public class Game1 : Game
         _spriteBatch.DrawString(uiFont, "- Pil-tangenter eller WASD: flytta skeppet", new Vector2(20, 60), Color.White);
         _spriteBatch.DrawString(uiFont, "- SPACE: skjut", new Vector2(20, 88), Color.White);
         _spriteBatch.DrawString(uiFont, "- ESC: tillbaka till menyn", new Vector2(20, 116), Color.White);
-        _spriteBatch.DrawString(uiFont, "Tryck ENTER eller ESC för att gå tillbaka till menyn.", new Vector2(20, Window.ClientBounds.Height - 40), Color.White);
+        _spriteBatch.DrawString(uiFont, "Tryck ENTER eller ESC för att gå tillbaka till menyn.",
+            new Vector2(20, Window.ClientBounds.Height - 40), Color.White);
     }
 
-	// Rita en scrollande bakgrund (loopa vertikalt)
+    // Rita en scrollande bakgrund (loopa vertikalt)
     private void DrawBackground()
     {
-        int width = Window.ClientBounds.Width;
-        int height = Window.ClientBounds.Height;
-		// Destination = hela skärmen
-        Rectangle destination = new Rectangle(0, 0, width, height);
-		// Source flytta för att skapa scroll-effekt
-        Rectangle source = new Rectangle(0, (int)backgroundScroll, width, height);
+        var width = Window.ClientBounds.Width;
+        var height = Window.ClientBounds.Height;
+        // Destination = hela skärmen
+        var destination = new Rectangle(0, 0, width, height);
+        // Source flytta för att skapa scroll-effekt
+        var source = new Rectangle(0, (int)backgroundScroll, width, height);
         _spriteBatch.Draw(backgroundTexture, destination, source, Color.White);
     }
 
-	// Uppdatera bakgrundens scroll-position
+    // Uppdatera bakgrundens scroll-position
     private void UpdateBackground(GameTime gameTime)
     {
-        float scrollSpeedPerSecond = 1.4f * 60f;
-        float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-		// Flytta bakgrunden nedåt
+        var scrollSpeedPerSecond = 1.4f * 60f;
+        var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        // Flytta bakgrunden nedåt
         backgroundScroll += scrollSpeedPerSecond * dt;
         // Loopa tillbaka när slutet nås
         if (backgroundScroll >= backgroundTexture.Height)
@@ -486,27 +475,27 @@ public class Game1 : Game
     {
         enemies.Clear();
 
-		//Minor-fiender
-        for (int i = 0; i < 10; i++)
+        //Minor-fiender
+        for (var i = 0; i < 10; i++)
         {
-            int x = GetSpawnXAwayFromPlayer(mineTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -mineTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(mineTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -mineTexture.Height);
             enemies.Add(new Mine(mineTexture, x, y));
         }
 
-		// Tripod-fiender
-        for (int i = 0; i < 5; i++)
+        // Tripod-fiender
+        for (var i = 0; i < 5; i++)
         {
-            int x = GetSpawnXAwayFromPlayer(tripodTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -tripodTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(tripodTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -tripodTexture.Height);
             enemies.Add(new Tripod(tripodTexture, x, y));
         }
 
         // Lägg till extra fiende
-        for (int i = 0; i < 4; i++)
+        for (var i = 0; i < 4; i++)
         {
-            int x = GetSpawnXAwayFromPlayer(stoneTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -stoneTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(stoneTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -stoneTexture.Height);
             enemies.Add(new StoneEnemy(stoneTexture, x, y));
         }
     }
@@ -514,24 +503,24 @@ public class Game1 : Game
     // Spawnar en fiende av slumpad typ för kontinuerligt spel utan vågor
     private void SpawnRandomEnemy()
     {
-        int enemyType = random.Next(0, 3);
+        var enemyType = random.Next(0, 3);
 
         if (enemyType == 0)
         {
-            int x = GetSpawnXAwayFromPlayer(mineTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -mineTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(mineTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -mineTexture.Height);
             enemies.Add(new Mine(mineTexture, x, y));
         }
         else if (enemyType == 1)
         {
-            int x = GetSpawnXAwayFromPlayer(tripodTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -tripodTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(tripodTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -tripodTexture.Height);
             enemies.Add(new Tripod(tripodTexture, x, y));
         }
         else
         {
-            int x = GetSpawnXAwayFromPlayer(stoneTexture.Width);
-            int y = random.Next(-Window.ClientBounds.Height, -stoneTexture.Height);
+            var x = GetSpawnXAwayFromPlayer(stoneTexture.Width);
+            var y = random.Next(-Window.ClientBounds.Height, -stoneTexture.Height);
             enemies.Add(new StoneEnemy(stoneTexture, x, y));
         }
     }
@@ -539,18 +528,18 @@ public class Game1 : Game
     // Minska risken att ny våg spawnar rakt i spelarens lane
     private int GetSpawnXAwayFromPlayer(int enemyWidth)
     {
-        int maxX = Math.Max(1, Window.ClientBounds.Width - enemyWidth);
+        var maxX = Math.Max(1, Window.ClientBounds.Width - enemyWidth);
 
         if (player == null || !player.IsAlive)
             return random.Next(0, maxX);
 
-        float playerCenterX = player.X + player.Width / 2f;
+        var playerCenterX = player.X + player.Width / 2f;
         const float minHorizontalGap = 90f;
 
-        for (int i = 0; i < 12; i++)
+        for (var i = 0; i < 12; i++)
         {
-            int x = random.Next(0, maxX);
-            float enemyCenterX = x + enemyWidth / 2f;
+            var x = random.Next(0, maxX);
+            var enemyCenterX = x + enemyWidth / 2f;
             if (Math.Abs(enemyCenterX - playerCenterX) >= minHorizontalGap)
                 return x;
         }
@@ -561,39 +550,39 @@ public class Game1 : Game
     // Guldmynt ovanför skärmen
     private void SpawnCoin()
     {
-		// Se till att X är alltid inom skärmen
-        int maxX = Math.Max(1, Window.ClientBounds.Width - coinTexture.Width);
-        int x = random.Next(0, maxX);
-        int y = -coinTexture.Height;
+        // Se till att X är alltid inom skärmen
+        var maxX = Math.Max(1, Window.ClientBounds.Width - coinTexture.Width);
+        var x = random.Next(0, maxX);
+        var y = -coinTexture.Height;
         coins.Add(new Coin(coinTexture, x, y));
     }
 
     // Uppdatera alla coins (spawn, rörelse, kollision)
     private void UpdateCoins(GameTime gameTime)
     {
-
         if (gameTime.TotalGameTime.TotalMilliseconds - timeSinceLastCoinSpawn >= CoinSpawnIntervalMs)
         {
             SpawnCoin();
             timeSinceLastCoinSpawn = gameTime.TotalGameTime.TotalMilliseconds;
         }
 
-        foreach (Coin c in coins.ToList())
+        foreach (var c in coins.ToList())
         {
             if (c.IsAlive)
             {
                 c.Update(Window);
-				// KOntrollera kollisionen
+                // KOntrollera kollisionen
                 if (player.IsAlive && c.IsAlive && c.CheckCollision(player))
                 {
                     c.IsAlive = false;
 
-					// Uppdatera statistik och poäng
+                    // Uppdatera statistik och poäng
                     coinsCollected++;
                     player.Points += PointsPerCoin;
                 }
             }
-			// Ta bort coin om det är inte längre aktiv
+
+            // Ta bort coin om det är inte längre aktiv
             if (!c.IsAlive)
                 coins.Remove(c);
         }
@@ -602,16 +591,14 @@ public class Game1 : Game
     // Uppdatera fiender, kollisioner och tidsstyrd spawn
     private void UpdateEnemies(GameTime gameTime)
     {
-        foreach (Enemy e in enemies.ToList())
-        {
+        foreach (var e in enemies.ToList())
             if (e.IsAlive)
             {
-                foreach (Bullet b in player.Bullets)
-                {
-					// Kolla om någon kula har träffat fienden
+                foreach (var b in player.Bullets)
+                    // Kolla om någon kula har träffat fienden
                     if (e.IsAlive && b.IsAlive && CheckBulletHit(e, b))
                     {
-						// Döda fiende och kula
+                        // Döda fiende och kula
                         e.IsAlive = false;
                         b.IsAlive = false;
                         // Ge poäng
@@ -619,7 +606,6 @@ public class Game1 : Game
                         enemiesShot++;
                         break;
                     }
-                }
 
                 if (e.IsAlive)
                 {
@@ -633,9 +619,9 @@ public class Game1 : Game
             {
                 enemies.Remove(e);
             }
-        }
 
-        if (player.IsAlive && gameTime.TotalGameTime.TotalMilliseconds - timeSinceLastEnemySpawn >= EnemySpawnIntervalMs)
+        if (player.IsAlive &&
+            gameTime.TotalGameTime.TotalMilliseconds - timeSinceLastEnemySpawn >= EnemySpawnIntervalMs)
         {
             SpawnRandomEnemy();
             timeSinceLastEnemySpawn = gameTime.TotalGameTime.TotalMilliseconds;
@@ -645,9 +631,9 @@ public class Game1 : Game
     // Kontrollera om en kula träffar en fiende (hitbox)
     private bool CheckBulletHit(Enemy enemy, Bullet bullet)
     {
- 		// Skapa rektanglar för fiende och kula
-        Rectangle enemyRect = new Rectangle((int)enemy.X, (int)enemy.Y, (int)enemy.Width, (int)enemy.Height);
-        Rectangle bulletRect = new Rectangle((int)bullet.X, (int)bullet.Y, (int)bullet.Width, (int)bullet.Height);
+        // Skapa rektanglar för fiende och kula
+        var enemyRect = new Rectangle((int)enemy.X, (int)enemy.Y, (int)enemy.Width, (int)enemy.Height);
+        var bulletRect = new Rectangle((int)bullet.X, (int)bullet.Y, (int)bullet.Width, (int)bullet.Height);
 
         // Gör hitboxen lite större
         bulletRect.Inflate(3, 3);
@@ -662,7 +648,7 @@ public class Game1 : Game
             Window.ClientBounds.Height - 120,
             5f,
             5f);
- 		// Nollställ statistik
+        // Nollställ statistik
         enemiesShot = 0;
         coinsCollected = 0;
         coins.Clear(); // REnsa coins
@@ -670,5 +656,17 @@ public class Game1 : Game
         timeSinceLastCoinSpawn = 0;
         SpawnEnemies();
         SpawnCoin();
+    }
+
+    // Gamestate
+    private enum State
+    {
+        Menu,
+        Run,
+        EnterScore,
+        HighScore,
+        About,
+        HowToPlay,
+        Quit
     }
 }

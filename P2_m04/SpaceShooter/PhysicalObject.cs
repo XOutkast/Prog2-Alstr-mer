@@ -5,7 +5,7 @@ namespace SpaceShooter;
 
 // Klassen PhysicalObject
 // Basklass för objektet som kan kollidera & och har "leva/dö" status
-abstract class PhysicalObject : MovingObject
+internal abstract class PhysicalObject : MovingObject
 {
     // Om objektet är aktivt eller inte
     protected bool isAlive = true;
@@ -15,6 +15,13 @@ abstract class PhysicalObject : MovingObject
     public PhysicalObject(Texture2D texture, float x, float y, float speedX, float speedY)
         : base(texture, x, y, speedX, speedY)
     {
+    }
+
+    // Ge åtkomst till livstatus
+    public bool IsAlive
+    {
+        get => isAlive;
+        set => isAlive = value;
     }
 
     // Kontrollera kollision
@@ -34,7 +41,4 @@ abstract class PhysicalObject : MovingObject
 
         return myRect.Intersects(otherRect);
     }
-
-    // Ge åtkomst till livstatus
-    public bool IsAlive { get => isAlive; set => isAlive = value; }
 }

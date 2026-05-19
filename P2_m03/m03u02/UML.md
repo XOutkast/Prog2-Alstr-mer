@@ -3,25 +3,25 @@
 ## Mermaid Diagram
 
 classDiagram
-    class Vehicle {
-        <<abstract>>
-        - string regNr
-        - string make
-        - string model
-        - int year
-        - bool forSale
-        + Vehicle()
-        + Vehicle(string regNr, string make, string model, int year, bool forSale)
-        + string RegNr
-        + string Make
-        + string Model
-        + int Year
-        + bool ForSale
-        + string YearToString()
-        + string ForSaleToString()
-        + string ToString()
-        + string ToStringList()
-    }
+class Vehicle {
+<<abstract>>
+- string regNr
+- string make
+- string model
+- int year
+- bool forSale
++ Vehicle()
++ Vehicle(string regNr, string make, string model, int year, bool forSale)
++ string RegNr
++ string Make
++ string Model
++ int Year
++ bool ForSale
++ string YearToString()
++ string ForSaleToString()
++ string ToString()
++ string ToStringList()
+}
 
     class Car {
         + Car()

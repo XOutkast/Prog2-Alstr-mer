@@ -1,4 +1,5 @@
 namespace DB.Models;
+
 public class Lorry : Vehicle
 {
     public Lorry(string regNr, string make, string model, int year, bool forSale, int load)

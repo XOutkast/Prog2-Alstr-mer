@@ -9,9 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="obj\**\*.cs" />
-        <Compile Remove="bin\**\*.cs" />
-        <Compile Remove="m03u02\**\*.cs" />
+        <Compile Remove="obj\**\*.cs"/>
+        <Compile Remove="bin\**\*.cs"/>
+        <Compile Remove="m03u02\**\*.cs"/>
     </ItemGroup>
 
 </Project>

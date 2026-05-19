@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace API_;
+
 public sealed class BiluppgifterApiClient
 {
     private readonly HttpClient httpClient;
@@ -19,7 +20,8 @@ public sealed class BiluppgifterApiClient
         httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("CarAPI/1.0");
     }
 
-    public async Task<VehicleLookupResult> GetVehicleByRegNoAsync(string regNo, CancellationToken cancellationToken = default)
+    public async Task<VehicleLookupResult> GetVehicleByRegNoAsync(string regNo,
+        CancellationToken cancellationToken = default)
     {
         var encodedRegNo = Uri.EscapeDataString(regNo.Trim().ToUpperInvariant());
         var call = $"api/v1/lookup/vehicle/regno/{encodedRegNo}";
@@ -46,10 +48,7 @@ public sealed class BiluppgifterApiClient
             RawJson = json.ToString(Formatting.Indented)
         };
 
-        if (string.IsNullOrWhiteSpace(result.RegNo))
-        {
-            result.RegNo = regNo;
-        }
+        if (string.IsNullOrWhiteSpace(result.RegNo)) result.RegNo = regNo;
 
         return result;
     }
@@ -59,10 +58,7 @@ public sealed class BiluppgifterApiClient
         foreach (var path in paths)
         {
             var value = root.SelectToken(path)?.ToString();
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value;
-            }
+            if (!string.IsNullOrWhiteSpace(value)) return value;
         }
 
         return string.Empty;

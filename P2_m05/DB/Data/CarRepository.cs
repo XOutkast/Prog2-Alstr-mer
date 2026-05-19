@@ -2,14 +2,15 @@ using System.Data.SQLite;
 using DB.Models;
 
 namespace DB.Data;
+
 public class CarRepository
 {
-    private readonly string _connectionString;
     private const string DbFileName = "car.db";
+    private readonly string _connectionString;
 
     public CarRepository()
     {
-        string dbPath = ResolveDbPath();
+        var dbPath = ResolveDbPath();
         _connectionString = $"Data Source={dbPath};Version=3;";
         InitializeDatabase();
     }
@@ -21,10 +22,7 @@ public class CarRepository
         while (currentDir is not null)
         {
             var projectFile = Path.Combine(currentDir.FullName, "DB.csproj");
-            if (File.Exists(projectFile))
-            {
-                return Path.Combine(currentDir.FullName, DbFileName);
-            }
+            if (File.Exists(projectFile)) return Path.Combine(currentDir.FullName, DbFileName);
 
             currentDir = currentDir.Parent;
         }
@@ -37,7 +35,7 @@ public class CarRepository
         using (SQLiteConnection connection = new(_connectionString))
         {
             connection.Open();
-            using (SQLiteCommand command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"
                     CREATE TABLE IF NOT EXISTS car (
@@ -68,18 +66,18 @@ public class CarRepository
         using (SQLiteConnection connection = new(_connectionString))
         {
             connection.Open();
-            using (SQLiteCommand command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT regNr, made, model, year, forSale FROM car";
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        string regNr = reader.GetString(0);
-                        string made = reader.GetString(1);
-                        string model = reader.GetString(2);
-                        int year = reader.GetInt32(3);
-                        bool forSale = reader.GetInt32(4) == 1;
+                        var regNr = reader.GetString(0);
+                        var made = reader.GetString(1);
+                        var model = reader.GetString(2);
+                        var year = reader.GetInt32(3);
+                        var forSale = reader.GetInt32(4) == 1;
 
                         cars.Add(new Car(regNr, made, model, year, forSale));
                     }
@@ -97,19 +95,19 @@ public class CarRepository
         using (SQLiteConnection connection = new(_connectionString))
         {
             connection.Open();
-            using (SQLiteCommand command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT regNr, made, model, year, forSale, load FROM lorry";
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        string regNr = reader.GetString(0);
-                        string made = reader.GetString(1);
-                        string model = reader.GetString(2);
-                        int year = reader.GetInt32(3);
-                        bool forSale = reader.GetInt32(4) == 1;
-                        int load = reader.GetInt32(5);
+                        var regNr = reader.GetString(0);
+                        var made = reader.GetString(1);
+                        var model = reader.GetString(2);
+                        var year = reader.GetInt32(3);
+                        var forSale = reader.GetInt32(4) == 1;
+                        var load = reader.GetInt32(5);
 
                         lorries.Add(new Lorry(regNr, made, model, year, forSale, load));
                     }
@@ -125,20 +123,20 @@ public class CarRepository
         using (SQLiteConnection connection = new(_connectionString))
         {
             connection.Open();
-            using (SQLiteCommand command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT regNr, made, model, year, forSale FROM car WHERE regNr = @regNr";
                 command.Parameters.AddWithValue("@regNr", regNr);
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        string readRegNr = reader.GetString(0);
-                        string made = reader.GetString(1);
-                        string model = reader.GetString(2);
-                        int year = reader.GetInt32(3);
-                        bool forSale = reader.GetInt32(4) == 1;
+                        var readRegNr = reader.GetString(0);
+                        var made = reader.GetString(1);
+                        var model = reader.GetString(2);
+                        var year = reader.GetInt32(3);
+                        var forSale = reader.GetInt32(4) == 1;
 
                         return new Car(readRegNr, made, model, year, forSale);
                     }
@@ -156,12 +154,12 @@ public class CarRepository
             using (SQLiteConnection connection = new(_connectionString))
             {
                 connection.Open();
-                using (SQLiteCommand command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandText = @"
                         INSERT INTO car (regNr, made, model, year, forSale)
                         VALUES (@regNr, @made, @model, @year, @forSale)";
-                    
+
                     command.Parameters.AddWithValue("@regNr", car.RegNr);
                     command.Parameters.AddWithValue("@made", car.Make);
                     command.Parameters.AddWithValue("@model", car.Model);
@@ -186,7 +184,7 @@ public class CarRepository
             using (SQLiteConnection connection = new(_connectionString))
             {
                 connection.Open();
-                using (SQLiteCommand command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandText = @"
                         INSERT INTO lorry (regNr, made, model, year, forSale, load)
@@ -217,13 +215,13 @@ public class CarRepository
             using (SQLiteConnection connection = new(_connectionString))
             {
                 connection.Open();
-                using (SQLiteCommand command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandText = @"
                         UPDATE car 
                         SET made = @made, model = @model, year = @year, forSale = @forSale
                         WHERE regNr = @regNr";
-                    
+
                     command.Parameters.AddWithValue("@regNr", car.RegNr);
                     command.Parameters.AddWithValue("@made", car.Make);
                     command.Parameters.AddWithValue("@model", car.Model);
@@ -248,7 +246,7 @@ public class CarRepository
             using (SQLiteConnection connection = new(_connectionString))
             {
                 connection.Open();
-                using (SQLiteCommand command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "DELETE FROM car WHERE regNr = @regNr";
                     command.Parameters.AddWithValue("@regNr", regNr);
@@ -270,7 +268,7 @@ public class CarRepository
             using (SQLiteConnection connection = new(_connectionString))
             {
                 connection.Open();
-                using (SQLiteCommand command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "DELETE FROM lorry WHERE regNr = @regNr";
                     command.Parameters.AddWithValue("@regNr", regNr);

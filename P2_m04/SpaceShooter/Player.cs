@@ -8,36 +8,36 @@ namespace SpaceShooter;
 
 // Klass: Player för spelarens rymdskepp
 // Hantera spelarens rörelse, skott, rymskep och poäng
-class Player : PhysicalObject
+internal class Player : PhysicalObject
 {
     // Medlemsvariabler
-    readonly List<Bullet> bullets;
-    readonly Texture2D bulletTexture;
-    double timeSinceLastBullet;
-    int points;
+    private readonly Texture2D bulletTexture;
+    private double timeSinceLastBullet;
 
     // Player() konstruktor för spelarobjektet
-	// Sätt startposition, hastighet & skott
+    // Sätt startposition, hastighet & skott
     public Player(Texture2D texture, float x, float y, float speedX, float speedY, Texture2D bulletTexture)
         : base(texture, x, y, speedX, speedY)
     {
-        bullets = new List<Bullet>();
+        Bullets = new List<Bullet>();
         this.bulletTexture = bulletTexture;
-        points = 0;
+        Points = 0;
     }
+
+    // Properties
+    public List<Bullet> Bullets { get; }
+
+    public int Points { get; set; }
 
     // Hantera input, uppdatera position och skjut skott
     public void Update(GameWindow window, GameTime gameTime)
     {
-        if (!isAlive)
-        {
-            return;
-        }
+        if (!isAlive) return;
 
         // Gör rörelsen oberoende av FPS (frameScale)
-        float frameScale = (float)(gameTime.ElapsedGameTime.TotalSeconds * 60.0);
+        var frameScale = (float)(gameTime.ElapsedGameTime.TotalSeconds * 60.0);
 
-        KeyboardState keyboardState = Keyboard.GetState();
+        var keyboardState = Keyboard.GetState();
 
         // Flytta spelaren beroende på tangentbordet
         if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
@@ -49,7 +49,7 @@ class Player : PhysicalObject
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
             vector.Y -= speed.Y * frameScale;
 
-		// Håll spelaren inom skärmen
+        // Håll spelaren inom skärmen
         if (vector.X < 0)
             vector.X = 0;
         if (vector.X > window.ClientBounds.Width - texture.Width)
@@ -59,38 +59,33 @@ class Player : PhysicalObject
         if (vector.Y > window.ClientBounds.Height - texture.Height)
             vector.Y = window.ClientBounds.Height - texture.Height;
 
-		// Skjuta skott med mellanslag
+        // Skjuta skott med mellanslag
         if (keyboardState.IsKeyDown(Keys.Space))
-        {
             if (gameTime.TotalGameTime.TotalMilliseconds - timeSinceLastBullet > 200)
             {
-                Bullet temp = new Bullet(
+                var temp = new Bullet(
                     bulletTexture,
                     vector.X + texture.Width / 2f - bulletTexture.Width / 2f,
                     vector.Y);
-                bullets.Add(temp);
+                Bullets.Add(temp);
                 timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
             }
-        }
 
-		// Uppdatera alla skott och ta bort de som är döda
-        foreach (Bullet b in bullets.ToList())
+        // Uppdatera alla skott och ta bort de som är döda
+        foreach (var b in Bullets.ToList())
         {
             b.Update();
             if (!b.IsAlive)
-                bullets.Remove(b);
+                Bullets.Remove(b);
         }
     }
 
     // Rita spelaren och alla aktiva skott i Draw()
     public override void Draw(SpriteBatch spriteBatch)
     {
-        if (isAlive)
-        {
-            base.Draw(spriteBatch);
-        }
+        if (isAlive) base.Draw(spriteBatch);
 
-        foreach (Bullet b in bullets)
+        foreach (var b in Bullets)
             b.Draw(spriteBatch);
     }
 
@@ -101,13 +96,9 @@ class Player : PhysicalObject
         vector.Y = y;
         speed.X = speedX;
         speed.Y = speedY;
-        bullets.Clear();
+        Bullets.Clear();
         timeSinceLastBullet = 0;
-        points = 0;
+        Points = 0;
         isAlive = true;
     }
-
-    // Properties
-    public List<Bullet> Bullets => bullets;
-    public int Points { get => points; set => points = value; }
 }

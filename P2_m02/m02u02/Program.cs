@@ -6,7 +6,7 @@ internal class Program
     private static void Main(string[] args)
     {
         // Skapa lista
-        List<Car> carList = new List<Car>();
+        var carList = new List<Car>();
         // Deklarera val variabel
         char menuSelection;
 

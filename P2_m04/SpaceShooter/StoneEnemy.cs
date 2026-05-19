@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 namespace SpaceShooter;
 
 //  Fiende med diagonal rörelse och studsar sidknaterna
-class StoneEnemy : Enemy
+internal class StoneEnemy : Enemy
 {
     // StoneEnemy() konstruktor
-	// Position & hastighet
+    // Position & hastighet
     public StoneEnemy(Texture2D texture, float x, float y)
         : base(texture, x, y, 2.5f, 2.2f)
     {

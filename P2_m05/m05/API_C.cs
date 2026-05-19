@@ -43,6 +43,7 @@ public sealed class API_C
             var status = (int)response.StatusCode;
             throw new HttpRequestException($"Remote error: ({status}) {response.ReasonPhrase}");
         }
+
         // Parsa json strängen
         var json = JObject.Parse(rawJson);
 
@@ -59,10 +60,7 @@ public sealed class API_C
         };
 
         // Använd den inmatade RegNr om API saknar det
-        if (string.IsNullOrWhiteSpace(result.RegNo))
-        {
-            result.RegNo = regNo;
-        }
+        if (string.IsNullOrWhiteSpace(result.RegNo)) result.RegNo = regNo;
         return result;
     }
 
@@ -74,11 +72,9 @@ public sealed class API_C
         {
             // hämta value
             var value = root.SelectToken(path)?.ToString();
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value;
-            }
+            if (!string.IsNullOrWhiteSpace(value)) return value;
         }
+
         return string.Empty;
     }
 }

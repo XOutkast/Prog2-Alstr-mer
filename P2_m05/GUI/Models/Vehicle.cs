@@ -1,4 +1,5 @@
 namespace GUI.Models;
+
 public abstract class Vehicle
 {
     protected Vehicle(string regNr, string make, string model, int year, bool forSale)

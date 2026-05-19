@@ -3,12 +3,12 @@
 ## Mermaid Diagram
 
 classDiagram
-    class Car {
-        - string regNr
-        - string make
-        - string model
-        - int year
-        - bool forSale
+class Car {
+- string regNr
+- string make
+- string model
+- int year
+- bool forSale
 
         + Car()
         + Car(string regNr, string make, string model, int year, bool forSale)

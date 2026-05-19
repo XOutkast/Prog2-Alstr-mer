@@ -1,6 +1,5 @@
-using m05.Vehicle;
 using m05.Biluppgifter;
-using Repository;
+using m05.Vehicle;
 
 namespace m05;
 
@@ -8,53 +7,54 @@ namespace m05;
 
 public class MainForm : Form
 {
+    private readonly API_C _apiClient;
+
     // Databas & API-klienten
     private readonly Repository.Repository _repository;
-    private readonly API_C _apiClient;
 
     // Lagra fordon lokalt
     private readonly List<Vehicle.Vehicle> _vehicles = new();
-
-    // UI-komponenter (labels för fordon)
-    private readonly Label lblType = new();
-    private readonly Label lblRegNr = new();
-    private readonly Label lblMake = new();
-    private readonly Label lblModel = new();
-    private readonly Label lblYear = new();
-    private readonly Label lblForSale = new();
-    private readonly Label lblLoad = new();
-
-    // UI-komponenter för inmatning
-    private readonly ComboBox cmbType = new();
-    private readonly TextBox txtRegNr = new();
-    private readonly TextBox txtMake = new();
-    private readonly TextBox txtModel = new();
-    private readonly TextBox txtYear = new();
-    private readonly TextBox txtLoad = new();
-    private readonly CheckBox chkForSale = new();
 
     // UI-knappar
     private readonly Button btnAdd = new();
     private readonly Button btnClear = new();
     private readonly Button btnRemove = new();
+    private readonly Button btnSearch = new();
+    private readonly CheckBox chkForSale = new();
 
-    // List som visar fordon
-    private readonly ListView lvVehicles = new();
+    // UI-komponenter för inmatning
+    private readonly ComboBox cmbType = new();
+    private readonly Label lblForSale = new();
+    private readonly Label lblLoad = new();
+    private readonly Label lblMake = new();
+    private readonly Label lblModel = new();
+    private readonly Label lblRegNr = new();
 
     // API-sökning UI
     private readonly Label lblSearchRegNr = new();
-    private readonly TextBox txtSearchRegNr = new();
-    private readonly Button btnSearch = new();
-    private readonly RichTextBox txtRawJson = new(); // Visar rå JSON från API
-    private readonly TableLayoutPanel tlpCarInfo = new(); // Tabell för API-detaljer
+
+    // UI-komponenter (labels för fordon)
+    private readonly Label lblType = new();
+    private readonly Label lblValueColor = new();
+    private readonly Label lblValueMake = new();
+    private readonly Label lblValueModel = new();
+    private readonly Label lblValueModelYear = new();
 
     // Labels visar API-data
     private readonly Label lblValueRegNr = new();
     private readonly Label lblValueType = new();
-    private readonly Label lblValueMake = new();
-    private readonly Label lblValueModel = new();
-    private readonly Label lblValueModelYear = new();
-    private readonly Label lblValueColor = new();
+    private readonly Label lblYear = new();
+
+    // List som visar fordon
+    private readonly ListView lvVehicles = new();
+    private readonly TableLayoutPanel tlpCarInfo = new(); // Tabell för API-detaljer
+    private readonly TextBox txtLoad = new();
+    private readonly TextBox txtMake = new();
+    private readonly TextBox txtModel = new();
+    private readonly RichTextBox txtRawJson = new(); // Visar rå JSON från API
+    private readonly TextBox txtRegNr = new();
+    private readonly TextBox txtSearchRegNr = new();
+    private readonly TextBox txtYear = new();
 
     public MainForm()
     {
@@ -117,7 +117,7 @@ public class MainForm : Form
 
         // Inmatning: fordontyp
         cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
-        cmbType.Items.AddRange(new object[] { "Car", "Lorry" });
+        cmbType.Items.AddRange("Car", "Lorry");
         cmbType.SelectedIndex = 0;
         cmbType.Location = new Point(110, 26);
         cmbType.Size = new Size(120, 23);
@@ -210,10 +210,7 @@ public class MainForm : Form
         tlpCarInfo.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
         tlpCarInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
         tlpCarInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-        for (var i = 0; i < 6; i++)
-        {
-            tlpCarInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        }
+        for (var i = 0; i < 6; i++) tlpCarInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
 
         // Fyll tabellen med API-info (label & value)
         AddInfoRow(0, "RegNr", lblValueRegNr);
@@ -330,6 +327,7 @@ public class MainForm : Form
             MessageBox.Show($"Nagot gick fel vid hamtning av fordonsdata.\nMeddelande: {ex.Message}",
                 "Tekniskt fel", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
         // Updatera knappstatus
         CheckButtons();
     }
@@ -383,6 +381,7 @@ public class MainForm : Form
                 MessageBox.Show("Lastbil maste ha giltig maxlast", "Felaktig inmatning");
                 return;
             }
+
             // Försök lägga till lastbil i databasen
             if (!_repository.AddLorry(new Lorry(regNr, make, model, year, chkForSale.Checked, load)))
             {
@@ -408,16 +407,10 @@ public class MainForm : Form
     // Ta bort markerat fordon
     private void RemoveSelectedVehicle()
     {
-        if (lvVehicles.SelectedItems.Count == 0)
-        {
-            return;
-        }
+        if (lvVehicles.SelectedItems.Count == 0) return;
 
         var selectedIndex = lvVehicles.SelectedIndices[0];
-        if (selectedIndex < 0 || selectedIndex >= _vehicles.Count)
-        {
-            return;
-        }
+        if (selectedIndex < 0 || selectedIndex >= _vehicles.Count) return;
 
         var vehicle = _vehicles[selectedIndex];
         var deleted = vehicle is Lorry ? _repository.DeleteLorry(vehicle.RegNr) : _repository.DeleteCar(vehicle.RegNr);
@@ -440,10 +433,7 @@ public class MainForm : Form
     {
         // Töm alla fordon
         var count = _vehicles.Count;
-        if (count == 0)
-        {
-            return;
-        }
+        if (count == 0) return;
 
         var result = MessageBox.Show(
             $"Ar du saker? Du kommer att ta bort {count} st fordon.",
@@ -451,24 +441,15 @@ public class MainForm : Form
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning);
 
-        if (result != DialogResult.Yes)
-        {
-            return;
-        }
+        if (result != DialogResult.Yes) return;
 
         // Undvik iteration, så skapa en kopia av listan _vehciles
         var snapshot = new List<Vehicle.Vehicle>(_vehicles);
         foreach (var vehicle in snapshot)
-        {
             if (vehicle is Lorry)
-            {
                 _repository.DeleteLorry(vehicle.RegNr);
-            }
             else
-            {
                 _repository.DeleteCar(vehicle.RegNr);
-            }
-        }
 
         RefreshVehicleList();
         MessageBox.Show($"Du har rensat databasen med {count} st fordon", "Rensa listan");

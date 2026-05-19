@@ -1,31 +1,31 @@
 using GUI.Models;
 
 namespace GUI;
+
 public class MainForm : Form
 {
-    private readonly List<Vehicle> vehicles = new();
-
-    private readonly Label lblType = new();
-    private readonly Label lblRegNr = new();
-    private readonly Label lblMake = new();
-    private readonly Label lblModel = new();
-    private readonly Label lblYear = new();
-    private readonly Label lblForSale = new();
-    private readonly Label lblLoad = new();
-
-    private readonly ComboBox cmbType = new();
-    private readonly TextBox txtRegNr = new();
-    private readonly TextBox txtMake = new();
-    private readonly TextBox txtModel = new();
-    private readonly TextBox txtYear = new();
-    private readonly TextBox txtLoad = new();
-    private readonly CheckBox chkForSale = new();
-
     private readonly Button btnAdd = new();
     private readonly Button btnClear = new();
     private readonly Button btnRemove = new();
+    private readonly CheckBox chkForSale = new();
+
+    private readonly ComboBox cmbType = new();
+    private readonly Label lblForSale = new();
+    private readonly Label lblLoad = new();
+    private readonly Label lblMake = new();
+    private readonly Label lblModel = new();
+    private readonly Label lblRegNr = new();
+
+    private readonly Label lblType = new();
+    private readonly Label lblYear = new();
 
     private readonly ListView lvVehicles = new();
+    private readonly TextBox txtLoad = new();
+    private readonly TextBox txtMake = new();
+    private readonly TextBox txtModel = new();
+    private readonly TextBox txtRegNr = new();
+    private readonly TextBox txtYear = new();
+    private readonly List<Vehicle> vehicles = new();
 
     public MainForm()
     {
@@ -74,7 +74,7 @@ public class MainForm : Form
         lblLoad.AutoSize = true;
 
         cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
-        cmbType.Items.AddRange(new object[] { "Car", "Lorry" });
+        cmbType.Items.AddRange("Car", "Lorry");
         cmbType.SelectedIndex = 0;
         cmbType.Location = new Point(132, 28);
         cmbType.Size = new Size(120, 23);
@@ -198,16 +198,10 @@ public class MainForm : Form
 
     private void RemoveSelectedVehicle()
     {
-        if (lvVehicles.SelectedItems.Count == 0)
-        {
-            return;
-        }
+        if (lvVehicles.SelectedItems.Count == 0) return;
 
         var selectedIndex = lvVehicles.SelectedIndices[0];
-        if (selectedIndex < 0 || selectedIndex >= vehicles.Count)
-        {
-            return;
-        }
+        if (selectedIndex < 0 || selectedIndex >= vehicles.Count) return;
 
         var regNr = vehicles[selectedIndex].RegNr;
         vehicles.RemoveAt(selectedIndex);
@@ -219,10 +213,7 @@ public class MainForm : Form
     private void ClearVehicles()
     {
         var count = vehicles.Count;
-        if (count == 0)
-        {
-            return;
-        }
+        if (count == 0) return;
 
         vehicles.Clear();
         RefreshVehicleList();

@@ -1,4 +1,5 @@
 ﻿namespace DB;
+
 internal static class Program
 {
     [STAThread]

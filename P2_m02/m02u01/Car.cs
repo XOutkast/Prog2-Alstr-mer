@@ -20,11 +20,11 @@ public class Car
         Year = year;
         ForSale = forSale;
     }
+
     // Properties
     public string RegNr { get; set; } = "";
     public string Make { get; set; } = "";
     public string Model { get; set; } = "";
-    
 
 
     // Property med validering
@@ -55,6 +55,7 @@ public class Car
         if (ForSale) return "Ja";
         return "Nej";
     }
+
     // ToString metod
     public override string ToString()
     {

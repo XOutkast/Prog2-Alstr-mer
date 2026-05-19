@@ -5,7 +5,7 @@ namespace SpaceShooter;
 
 // Enemy klass
 // Abstrakt basklass för fiender
-abstract class Enemy : PhysicalObject
+internal abstract class Enemy : PhysicalObject
 {
     // Skapa Enemy() med konstruktor för fiendeklasser
     public Enemy(Texture2D texture, float x, float y, float speedX, float speedY)

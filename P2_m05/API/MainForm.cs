@@ -1,22 +1,22 @@
 namespace API_;
+
 public class MainForm : Form
 {
-    private readonly Label lblRegNr = new();
-    private readonly TextBox txtRegNr = new();
+    private readonly BiluppgifterApiClient apiClient;
     private readonly Button btnSearch = new();
-
-    private readonly RichTextBox txtRawJson = new();
-
-    private readonly TableLayoutPanel tlpCarInfo = new();
-
-    private readonly Label lblValueRegNr = new();
-    private readonly Label lblValueType = new();
+    private readonly Label lblRegNr = new();
+    private readonly Label lblValueColor = new();
     private readonly Label lblValueMake = new();
     private readonly Label lblValueModel = new();
     private readonly Label lblValueModelYear = new();
-    private readonly Label lblValueColor = new();
 
-    private readonly BiluppgifterApiClient apiClient;
+    private readonly Label lblValueRegNr = new();
+    private readonly Label lblValueType = new();
+
+    private readonly TableLayoutPanel tlpCarInfo = new();
+
+    private readonly RichTextBox txtRawJson = new();
+    private readonly TextBox txtRegNr = new();
 
     public MainForm()
     {
@@ -59,10 +59,7 @@ public class MainForm : Form
         tlpCarInfo.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
         tlpCarInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
         tlpCarInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-        for (var i = 0; i < 6; i++)
-        {
-            tlpCarInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        }
+        for (var i = 0; i < 6; i++) tlpCarInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
 
         AddInfoRow(0, "RegNr", lblValueRegNr);
         AddInfoRow(1, "Typ", lblValueType);

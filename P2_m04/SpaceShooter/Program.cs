@@ -1,4 +1,6 @@
-﻿using var game = new SpaceShooter.Game1();
+﻿using SpaceShooter;
+
+using var game = new Game1();
 
 // Starta spelet
 game.Run();
