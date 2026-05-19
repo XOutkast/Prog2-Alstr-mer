@@ -1,5 +1,6 @@
+```mermaid
 classDiagram
-        class Game1 {
+    class Game1 {
             -int score
             -int level
             -Snake snake
@@ -105,3 +106,4 @@ classDiagram
 
         HighScoreService --> HighScoreEntry : reads/writes
         Snake ..> Direction : uses
+```
