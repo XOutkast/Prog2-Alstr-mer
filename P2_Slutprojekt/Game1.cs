@@ -56,20 +56,20 @@ public class Game1 : Game
     private Models.Snake snake = null!;
     private HighScoreService highScoreService = null!;
     private List<HighScoreEntry> highScores = new();
-    // Fixed-step frame counter (replaces accumulator timing)
+    // Räknar fixed-step-ramar.
     private int stepFrameCounter = 0;
     private double stepInterval = BaseStepInterval;
-    // Temporär hastighetsboost efter level-up (2% snabbare under en kort stund)
+    // Håll en temporär hastighetsboost efter level-up.
     private double levelSpeedBoostTimer = 0.0;
-    private const double LevelSpeedBoostDuration = 5.0; // sekunder
-    private const double LevelSpeedBoostFactor = 0.98; // 2% snabbare
+    private const double LevelSpeedBoostDuration = 5.0; // Ange sekunder.
+    private const double LevelSpeedBoostFactor = 0.98; // Gör spelet 2% snabbare.
     private int score;
     private int level;
     private string playerName = string.Empty;
     private double nameCursorTimer;
     private bool nameCursorVisible = true;
 
-    // Beräkna BoardPixelWidth/Height
+    // Beräkna brädets pixelstorlek.
     private int BoardPixelWidth => BoardWidth * CellSize;
     private int BoardPixelHeight => BoardHeight * CellSize;
     private int BoardLeft => (GraphicsDevice.Viewport.Width - BoardPixelWidth) / 2;
@@ -80,7 +80,7 @@ public class Game1 : Game
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        // Använd fast uppdateringssteg för enklare timing
+        // Använd fast uppdateringssteg för enklare timing.
         IsFixedTimeStep = true;
         Window.AllowUserResizing = false;
         graphics.PreferredBackBufferWidth = 740;
@@ -99,7 +99,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        // LoadContent: Ladda resurser och init tjänster
+        // Ladda resurser och initiera tjänster.
         spriteBatch = new SpriteBatch(GraphicsDevice);
         pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new[] { Color.White });
@@ -369,33 +369,34 @@ public class Game1 : Game
         }
     }
 
-    //Uppdatering av spelet (PLAYING STATE)
+    // Uppdatera spelet i playing state.
     private void UpdatePlaying(GameTime gameTime, KeyboardState keyboard)
     {
         // Spelarens rörelseinput (pilar eller WASD)
         HandleMovementInput(keyboard);
 
-        // Avsluta till meny med ESCAPE
+        // Gå tillbaka till menyn med Escape.
         if (IsNewKeyPress(keyboard, Keys.Escape))
         {
             screen = ScreenState.Menu;
             return;
         }
-        // Uppdatera eventuell temporär level-boost
+        // Uppdatera den temporära level-boostern.
         if (levelSpeedBoostTimer > 0)
         {
             levelSpeedBoostTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             if (levelSpeedBoostTimer < 0) levelSpeedBoostTimer = 0;
         }
 
-        // Fixed-step: räkna uppdateringsramar istället för ackumulator
+        //Räkna fixed-step
+
         var framesPerStep = Math.Max(1, (int)Math.Round(CurrentStepInterval / TargetElapsedTime.TotalSeconds));
         stepFrameCounter++;
 
         while (stepFrameCounter >= framesPerStep && screen == ScreenState.Playing)
         {
             stepFrameCounter -= framesPerStep;
-            UpdateSnakeStep(); // kolla kollision, flytta snake, ät osv
+            UpdateSnakeStep(); // Kontrollera kollisioner, flytta snake och hantera mat.
             UpdateHazards();
             CheckLevelProgression();
         }
@@ -418,7 +419,7 @@ public class Game1 : Game
         }
     }
 
-    // HighScore
+    // Visa high score-skärmen.
     private void UpdateHighScore(KeyboardState keyboard)
     {
         if (IsNewKeyPress(keyboard, Keys.Enter) || IsNewKeyPress(keyboard, Keys.Escape))
@@ -500,7 +501,7 @@ public class Game1 : Game
 
     private void UpdateSnakeStep()
     {
-        // Direkt applicera aktuell riktning (ingen buffring eller hypotetisk säkerhetskontroll)
+        // Applicera aktuell riktning direkt utan buffring.
         var nextHead = snake.NextHead();
 
         if (IsWall(nextHead) || snake.HitsSelf(nextHead))
@@ -588,7 +589,7 @@ public class Game1 : Game
             }
         }
 
-        return new Point(2, 2); // fallback
+        return new Point(2, 2); // Använd en fallback-position.
     }
 
     private bool IsOccupied(Point position)
