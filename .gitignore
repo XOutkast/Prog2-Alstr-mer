@@ -50,3 +50,7 @@ desktop.ini
 
 *.exe
 *.dll
+
+#Ignore my learning folders
+/Learning-CS/
+/monogam_test/
