@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Prog Cods/IT-Courses/csharp_P02/P2_Slutprojekt/SidTheSnakeA/Content/MyFont.spritefont</SourceFile>
+  <SourceTime>2026-04-29T21:35:47.1597707+02:00</SourceTime>
+  <DestFile>C:/Prog Cods/IT-Courses/csharp_P02/P2_Slutprojekt/SidTheSnakeA/Content/bin/DesktopGL/Content/MyFont.xnb</DestFile>
+  <DestTime>2026-05-06T01:58:07.3231966+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2025-10-20T16:25:32+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2025-10-20T16:25:32+02:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

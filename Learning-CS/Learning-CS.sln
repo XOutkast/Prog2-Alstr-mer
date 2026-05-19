@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basics", "Basics\Basics.csproj", "{66E18F88-87B2-4DDB-957B-C4C558F94B69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP", "OOP\OOP.csproj", "{89258E1A-8C1D-4668-88FC-23391D9DBC1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularMathCalculator", "ModularMathCalculator\ModularMathCalculator.csproj", "{CF77B33D-C811-4BC5-8619-83446A79DC5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66E18F88-87B2-4DDB-957B-C4C558F94B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E18F88-87B2-4DDB-957B-C4C558F94B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E18F88-87B2-4DDB-957B-C4C558F94B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E18F88-87B2-4DDB-957B-C4C558F94B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89258E1A-8C1D-4668-88FC-23391D9DBC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89258E1A-8C1D-4668-88FC-23391D9DBC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89258E1A-8C1D-4668-88FC-23391D9DBC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89258E1A-8C1D-4668-88FC-23391D9DBC1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF77B33D-C811-4BC5-8619-83446A79DC5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF77B33D-C811-4BC5-8619-83446A79DC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF77B33D-C811-4BC5-8619-83446A79DC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF77B33D-C811-4BC5-8619-83446A79DC5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

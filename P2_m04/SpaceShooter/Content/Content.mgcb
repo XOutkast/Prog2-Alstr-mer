@@ -1,0 +1,75 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:background.png
+
+#begin bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bullet.png
+
+#begin coin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:coin.png
+
+#begin menu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:menu.png
+
+#begin mine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:mine.png
+
+#begin ship.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:ship.png
+
+#begin stone.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:stone.png
+
+#begin tripod.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:tripod.png
+
+#begin menu/exit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:menu/exit.png
+
+#begin menu/highscore.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:menu/highscore.png
+
+#begin menu/start.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:menu/start.png
+
+#begin MyFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:MyFont.spritefont
+

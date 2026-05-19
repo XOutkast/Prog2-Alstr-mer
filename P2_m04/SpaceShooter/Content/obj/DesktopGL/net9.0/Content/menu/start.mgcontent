@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/start.png</SourceFile>
+  <SourceTime>2026-03-18T12:18:49.8599493+01:00</SourceTime>
+  <DestFile>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/bin/DesktopGL/Content/menu/start.xnb</DestFile>
+  <DestTime>2026-05-18T20:26:06.7256398+02:00</DestTime>
+  <Importer>TextureImporter</Importer>
+  <ImporterTime>2025-10-20T16:25:32+02:00</ImporterTime>
+  <Processor>TextureProcessor</Processor>
+  <ProcessorTime>2025-10-20T16:25:32+02:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
