@@ -2,27 +2,29 @@
 
 ## Mermaid Diagram
 
+```mermaid
 classDiagram
 class Car {
-- string regNr
-- string make
-- string model
-- int year
-- bool forSale
+    -string regNr
+    -string make
+    -string model
+    -int year
+    -bool forSale
 
-        + Car()
-        + Car(string regNr, string make, string model, int year, bool forSale)
+    +Car()
+    +Car(string regNr, string make, string model, int year, bool forSale)
 
-        + string RegNr {get set}
-        + string Make {get set}
-        + string Model {get set}
-        + int Year {get set}
-        + bool ForSale {get set}
+    +string RegNr
+    +string Make
+    +string Model
+    +int Year
+    +bool ForSale
 
-        + string YearToString()
-        + string ForSaleToString()
-        + string ToString()
-    }
+    +string YearToString()
+    +string ForSaleToString()
+    +string ToString()
+}
+```
 
 ## Förklaring
 

@@ -1,5 +1,5 @@
 # UML för SpaceShooter
-
+``` mermaid 
 classDiagram
     class GameObject {
       #Texture2D texture
@@ -117,3 +117,4 @@ classDiagram
     Game1 --> Enemy : använder
     Game1 --> Coin : använder
     Game1 --> HighScore : använder
+    ```

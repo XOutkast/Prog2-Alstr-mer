@@ -2,6 +2,7 @@
 
 ## Mermaid Diagram
 
+```mermaid
 classDiagram
 class Vehicle {
 <<abstract>>
@@ -40,6 +41,7 @@ class Vehicle {
 
     Vehicle <|-- Car
     Vehicle <|-- Lorry
+```
 
 ## Program.cs Funktionalitet
 
@@ -55,4 +57,3 @@ class Vehicle {
 - `RemoveVehicle()` - Ta bort ett fordon från listan
 - `EmptyList()` - Töm hela listan
 - `AddVehiclesAtStart()` - Lägg till testfordon vid start
-
