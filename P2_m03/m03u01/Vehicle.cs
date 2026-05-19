@@ -5,12 +5,12 @@ public abstract class Vehicle
     // Medlemsvariabler
     private int year;
 
-    // Defaultkonstruktor
+    // Konstruktor
     public Vehicle()
     {
     }
 
-    // Konstruktor med fem inmatade värden
+    // Konstruktor för 5 värden
     public Vehicle(string regNr, string make, string model, int year, bool forSale)
     {
         RegNr = regNr;
@@ -42,8 +42,6 @@ public abstract class Vehicle
     public bool ForSale { get; set; }
 
     // YearToString()
-    // Metod som gör om year till en String
-    // Inparameter: (inga inparametrar)
     // Returvärde: Den formaterade strängen
     public string YearToString()
     {
@@ -53,8 +51,6 @@ public abstract class Vehicle
     }
 
     // ForSaleToString()
-    // Metod som skriver ut om en bil är till salu eller inte
-    // Inparameter: (inga inparametrar)
     // Returvärde: Den formaterade strängen
     public string ForSaleToString()
     {
@@ -64,8 +60,6 @@ public abstract class Vehicle
     }
 
     // ToString()
-    // Metod som förbereder utskrift av bilinformation
-    // Inparameter: (inga inparametrar)
     // Returvärde: Den formaterade strängen
     public override string ToString()
     {
@@ -80,8 +74,7 @@ public abstract class Vehicle
     }
 
     // ToStringList()
-    // Abstrakt metod som förbereder utskrift av bilinformation i listform
-    // Inparameter: (inga inparametrar)
+    // Abstrakt: förbered utskrift av bilinformation i listform
     // Returvärde: Den formaterade strängen
     public abstract string ToStringList();
 }

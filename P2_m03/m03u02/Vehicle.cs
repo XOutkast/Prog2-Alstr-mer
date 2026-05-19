@@ -6,12 +6,12 @@ public abstract class Vehicle
     // Privata medlem-variabler
     private int year;
 
-    // Standard-konstruktor
+    // konstruktor
     public Vehicle()
     {
     }
 
-    // Konstruktor fär alla värden
+    // Konstruktor: för alla värden
     public Vehicle(string regNr, string make, string model, int year, bool forSale)
     {
         RegNr = regNr;
@@ -21,7 +21,7 @@ public abstract class Vehicle
         ForSale = forSale;
     }
 
-    // Properties - för att läsa & ändra fordonsdata
+    // Properties: läsa & ändra fordonsdata
     public string RegNr { get; set; } = "";
 
     public string Make { get; set; } = "";

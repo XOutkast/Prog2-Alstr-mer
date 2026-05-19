@@ -8,7 +8,7 @@ public class Lorry : Vehicle
     {
     }
 
-    // Konstruktor för alla värden
+    // Konstruktor för 5 värden
     public Lorry(string regNr, string make, string model, int year, bool forSale, int load) : base(regNr, make, model,
         year, forSale)
     {

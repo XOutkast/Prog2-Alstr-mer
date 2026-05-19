@@ -2,7 +2,6 @@
 
 internal class Program
 {
-    // Main()
     // (Vehicle - Car/Lorry)
     private static void Main(string[] args)
     {
