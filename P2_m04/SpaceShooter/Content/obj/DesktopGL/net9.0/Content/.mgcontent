@@ -4,18 +4,18 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/background.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/bullet.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/coin.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/mine.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/ship.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/stone.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/tripod.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/exit.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/highscore.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/start.png</File>
-    <File>c:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/MyFont.spritefont</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/background.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/bullet.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/coin.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/mine.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/ship.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/stone.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/tripod.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/exit.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/highscore.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/menu/start.png</File>
+    <File>C:/Prog Cods/IT-Courses/csharp_P02/P2_m04/SpaceShooter/Content/MyFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

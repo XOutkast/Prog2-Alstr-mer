@@ -1,8 +1,7 @@
-# UML Diagram - Vehicle Arv + Samling (m03u02)
+# UML Diagram: Vehicle Arv + Samling (m03u02)
 
 ## Mermaid Diagram
 
-```mermaid
 classDiagram
     class Vehicle {
         <<abstract>>
@@ -41,7 +40,6 @@ classDiagram
 
     Vehicle <|-- Car
     Vehicle <|-- Lorry
-```
 
 ## Program.cs Funktionalitet
 

@@ -1,8 +1,7 @@
-# UML Diagram - Vehicle Arv (m03u01)
+# UML Diagram: Vehicle Arv (m03u01)
 
 ## Mermaid Diagram
 
-```mermaid
 classDiagram
     class Vehicle {
         <<abstract>>
@@ -41,8 +40,7 @@ classDiagram
 
     Vehicle <|-- Car
     Vehicle <|-- Lorry
-```
 
 ## Notering
 
-- `Vehicle.ToStringList()` är abstrakt i koden (kursiv i SVG/UML).
+- `Vehicle.ToStringList()` är abstrakt

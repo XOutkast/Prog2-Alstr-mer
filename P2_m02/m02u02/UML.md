@@ -1,8 +1,7 @@
-# UML Diagram - Car Class (Updated)
+# UML Diagram: Car Class
 
 ## Mermaid Diagram
 
-```mermaid
 classDiagram
     class Car {
         - string regNr
@@ -25,7 +24,6 @@ classDiagram
         + string ToString()
         + string ToStringList()
     }
-```
 
 ## Förklaring
 

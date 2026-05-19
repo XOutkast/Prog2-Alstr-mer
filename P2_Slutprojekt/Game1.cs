@@ -104,7 +104,7 @@ public class Game1 : Game
         pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new[] { Color.White });
         font = Content.Load<SpriteFont>("MyFont");
-        highScoreService = new HighScoreService(Path.Combine(AppContext.BaseDirectory, "data.db"));
+        highScoreService = new HighScoreService(Path.Combine(AppContext.BaseDirectory, "data.json"));
         ResetRun();
     }
 
