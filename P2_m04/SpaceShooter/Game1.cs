@@ -214,7 +214,7 @@ public class Game1 : Game
     // Tangentval i menyn (menyinput)
     private void MenuUpdate(KeyboardState keyboardState, GameTime gameTime)
     {
-        UpdateBackground(gameTime);
+        // UpdateBackground(gameTime);
 
         if (IsNewKeyPress(keyboardState, Keys.Down))
             selectedMenuItem = (selectedMenuItem + 1) % 3;
@@ -470,7 +470,7 @@ public class Game1 : Game
             backgroundScroll -= backgroundTexture.Height;
     }
 
-    // Skapa en ny fiendevåg
+    //  En ny fiendevåg
     private void SpawnEnemies()
     {
         enemies.Clear();
